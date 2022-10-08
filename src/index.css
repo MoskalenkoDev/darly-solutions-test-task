@@ -1,0 +1,16 @@
+@import-normalize;
+@import-sanitize;
+
+* {
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+  border: none;
+  outline: none;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
