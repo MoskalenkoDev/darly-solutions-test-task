@@ -41,7 +41,7 @@ module.exports = () => {
   const data = { users: [] };
   for (let i = 0; i < 200; i++) {
     data.users.push({
-      id: i,
+      id: i + "",
       firstName: names[Math.floor((Math.random() * 100) % 8)],
       surname: surnames[Math.floor((Math.random() * 100) % 8)],
       lastName: lastNames[Math.floor((Math.random() * 100) % 6)],

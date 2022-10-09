@@ -25,7 +25,6 @@ export interface IUser {
 function App() {
   const [open, setOpen] = useState(false);
   const [users, setUsers] = useState<IUser[]>([]);
-  const [newUser, setNewUser] = useState<IUser | null>(null);
   const page = useRef(1);
   const isLoading = useRef(false);
 
@@ -33,7 +32,7 @@ function App() {
     if (!isLoading.current) {
       isLoading.current = true;
       let usersList = await getUsersList(page.current);
-      setUsers(usersList);
+      setUsers((prev) => [...prev, ...usersList]);
       page.current++;
       isLoading.current = false;
     }
@@ -45,17 +44,12 @@ function App() {
 
   const addUser = async (userInfo: IUser) => {
     const userRecord = await addNewUser(userInfo);
-    if (userRecord) setNewUser(userRecord);
+    if (userRecord) setUsers((prev) => [userRecord, ...prev]);
   };
 
   return (
     <div className="App">
-      <BasicTable
-        setOpen={setOpen}
-        users={users}
-        getNewUsers={getNewUsers}
-        newUser={newUser}
-      />
+      <BasicTable setOpen={setOpen} users={users} getNewUsers={getNewUsers} />
       <AddRecordDialog isOpen={open} setOpen={setOpen} addUser={addUser} />
     </div>
   );

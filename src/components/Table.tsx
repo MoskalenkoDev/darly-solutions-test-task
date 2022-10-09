@@ -9,75 +9,29 @@ import {
   Box,
   Button,
 } from "@mui/material";
-import {
-  Dispatch,
-  SetStateAction,
-  RefObject,
-  useState,
-  useEffect,
-} from "react";
+import { Dispatch, SetStateAction, RefObject } from "react";
 import { IUser } from "../App";
 import { useScroll } from "./../hooks/useScroll";
+import Row from "./Row";
+import React from "react";
 
 interface IProps {
   setOpen: Dispatch<SetStateAction<boolean>>;
   users: IUser[];
   getNewUsers: () => void;
-  newUser: IUser | null;
 }
 
-function BasicTable({ users, setOpen, getNewUsers, newUser }: IProps) {
-  let [tableList, setTableList] = useState<JSX.Element[]>([]);
-
-  let loadUsersOnScroll = (elemRef: RefObject<HTMLDivElement>) => {
+export default React.memo(function BasicTable({
+  users,
+  setOpen,
+  getNewUsers,
+}: IProps) {
+  const loadUsersOnScroll = (elemRef: RefObject<HTMLDivElement>) => {
     if (elemRef.current) {
       let bottom = elemRef.current.scrollHeight - elemRef.current.clientHeight;
       if (bottom - elemRef.current.scrollTop <= 30) getNewUsers();
     }
   };
-
-  const createListItems = (usersInfo: IUser[]) => {
-    let newList = usersInfo.map((row) => (
-      <TableRow
-        key={row.id}
-        sx={{
-          "&:last-child td, &:last-child th": {
-            border: 0,
-          },
-          "& td": {
-            maxWidth: 110,
-            textOverflow: "ellipsis",
-            whiteSpace: "nowrap",
-            overflow: "hidden",
-          },
-        }}
-      >
-        <TableCell>{row.firstName}</TableCell>
-        <TableCell>{row.surname}</TableCell>
-        <TableCell>{row.lastName}</TableCell>
-        <TableCell>{row.birthday}</TableCell>
-        <TableCell>{row.weight}</TableCell>
-        <TableCell>{row.height}</TableCell>
-        <TableCell>{row.sex}</TableCell>
-        <TableCell>{row.eyeColor}</TableCell>
-      </TableRow>
-    ));
-    return newList;
-  };
-
-  useEffect(() => {
-    if (users.length) {
-      const newList = createListItems(users);
-      setTableList((prev) => [...prev, ...newList]);
-    }
-  }, [users]);
-
-  useEffect(() => {
-    if (newUser) {
-      const newList = createListItems([newUser]);
-      setTableList((prev) => [...newList, ...prev]);
-    }
-  }, [newUser]);
 
   const tableRef = useScroll<HTMLDivElement>(loadUsersOnScroll);
 
@@ -110,7 +64,11 @@ function BasicTable({ users, setOpen, getNewUsers, newUser }: IProps) {
               <TableCell sx={{ whiteSpace: "nowrap" }}>Eye Color</TableCell>
             </TableRow>
           </TableHead>
-          <TableBody>{tableList}</TableBody>
+          <TableBody>
+            {users.map((row) => (
+              <Row row={row} key={row.id} />
+            ))}
+          </TableBody>
         </Table>
       </TableContainer>
 
@@ -125,6 +83,4 @@ function BasicTable({ users, setOpen, getNewUsers, newUser }: IProps) {
       </Button>
     </Box>
   );
-}
-
-export default BasicTable;
+});
