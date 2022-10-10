@@ -5,6 +5,7 @@ import {
   Dispatch,
   SetStateAction,
   useRef,
+  memo,
 } from "react";
 import {
   Slide,
@@ -26,8 +27,8 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import moment from "moment";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
-import { eyeColor, eyeColorType, sex, sexType } from "../App";
-import { IUser } from "./../App";
+import { eyeColor, eyeColorType, sex, sexType } from "../UsersList";
+import { IUser } from "../UsersList";
 
 const Transition = forwardRef(function Transition(
   props: TransitionProps & {
@@ -41,7 +42,7 @@ const Transition = forwardRef(function Transition(
 interface IProps {
   isOpen: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
-  addUser: (userInfo: IUser) => void;
+  addUser: (userInfo: IUser) => Promise<void>;
 }
 
 interface IFormInput {
@@ -55,7 +56,7 @@ interface IFormInput {
   eyeColor: string;
 }
 
-export default function AddRecordDialog({ isOpen, setOpen, addUser }: IProps) {
+function AddRecordDialog({ isOpen, setOpen, addUser }: IProps) {
   const {
     handleSubmit,
     control,
@@ -368,3 +369,5 @@ export default function AddRecordDialog({ isOpen, setOpen, addUser }: IProps) {
     </Dialog>
   );
 }
+
+export default memo(AddRecordDialog);

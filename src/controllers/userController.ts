@@ -1,6 +1,6 @@
 import { getUsers } from "../services/userService";
 import { addUser } from "../services/userService";
-import { IUser } from "./../App";
+import { IUser } from "../components/UsersList";
 
 export const getUsersList = async (page: number) => {
   try {

@@ -10,10 +10,10 @@ import {
   Button,
 } from "@mui/material";
 import { Dispatch, SetStateAction, RefObject } from "react";
-import { IUser } from "../App";
-import { useScroll } from "./../hooks/useScroll";
+import { IUser } from "../UsersList";
+import { useScroll } from "../../hooks/useScroll";
 import Row from "./Row";
-import React from "react";
+import { memo } from "react";
 
 interface IProps {
   setOpen: Dispatch<SetStateAction<boolean>>;
@@ -21,11 +21,7 @@ interface IProps {
   getNewUsers: () => void;
 }
 
-export default React.memo(function BasicTable({
-  users,
-  setOpen,
-  getNewUsers,
-}: IProps) {
+function UsersTable({ users, setOpen, getNewUsers }: IProps) {
   const loadUsersOnScroll = (elemRef: RefObject<HTMLDivElement>) => {
     if (elemRef.current) {
       let bottom = elemRef.current.scrollHeight - elemRef.current.clientHeight;
@@ -42,13 +38,13 @@ export default React.memo(function BasicTable({
         flexDirection: "column",
         maxWidth: 800,
         width: "100%",
-        margin: "0px auto",
+        height: "100%",
       }}
       className="animate__animated animate__backInDown"
     >
       <TableContainer
         component={Paper}
-        sx={{ borderRadius: 0, height: 650, minHeight: 250 }}
+        sx={{ borderRadius: 0, height: 650 }}
         ref={tableRef}
       >
         <Table aria-label="simple table">
@@ -83,4 +79,6 @@ export default React.memo(function BasicTable({
       </Button>
     </Box>
   );
-});
+}
+
+export default memo(UsersTable);

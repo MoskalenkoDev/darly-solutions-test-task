@@ -1,6 +1,6 @@
 import { TableCell, TableRow } from "@mui/material";
 import { memo } from "react";
-import { IUser } from "../App";
+import { IUser } from "../UsersList";
 
 interface IProps {
   row: IUser;

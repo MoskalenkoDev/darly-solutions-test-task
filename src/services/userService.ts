@@ -1,5 +1,5 @@
 import axios from "axios";
-import { IUser } from "./../App";
+import { IUser } from "../components/UsersList";
 
 const API_URL = "http://localhost:3001";
 
